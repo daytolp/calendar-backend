@@ -39,15 +39,15 @@ const updateEvents = async(req, res = response) => {
     const eventoId = req.params.id;
 
     try {
-        const eventoDB = await Evento.findById(eventoId);
+        const eventoDB = await Evento.findById(eventoId).populate('user', 'name');
         console.log({eventoDB})
         if (!eventoDB) 
             return res.status(404).json({
                         ok:false,
                         msg:"Evento no encontrado con id " + eventoId
                     });
-        
-        if (eventoDB?.user !== uid)
+       
+        if (eventoDB?.user?._id.toString() !== uid)
             return res.status(401)
                       .json({
                          ok:false,
