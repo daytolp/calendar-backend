@@ -17,9 +17,9 @@ const createEvents = async(req, res = response) => {
     const evento = new Evento(req.body);
 
     try {
-       const eventoDB = await evento.save();
        evento.user = req.uid;
-
+       const eventoDB = await evento.save();
+       
        res.status(201).json({
         ok:false,
         evento: eventoDB
@@ -47,11 +47,12 @@ const updateEvents = async(req, res = response) => {
                         msg:"Evento no encontrado con id " + eventoId
                     });
         
-        // if (eventoDB.user !== uid)
-        //     return res.status(401).json({
-        //                  ok:false,
-        //                  msg: "No tiene privilegio de editar este evento"
-        //                 });
+        if (eventoDB?.user !== uid)
+            return res.status(401)
+                      .json({
+                         ok:false,
+                         msg: "No tiene privilegio de editar este evento"
+                        });
 
         const nuevoEvento = {
             ...req.body,

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const validarJwt = (req, res = response, next) => {
     //x-token headers
     const token = req.header('x-token');
-    console.log({token});
+   
     if (!token) return response.json({
         ok:false,
         msg: 'No hay token en la petición'
@@ -13,7 +13,6 @@ const validarJwt = (req, res = response, next) => {
 
     try {
         const payload = jwt.verify(token, process.env.SECRET_JWT_SEED);
-        // console.log(payload);
         req.uid = payload.uid;
         req.name = payload.name;
          

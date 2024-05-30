@@ -16,6 +16,7 @@ const crearUsuario =  async(req, res = response) => {
                 msg: 'Un usuario existe con ese correo'
             })
         }
+        
         usuario = new Usuario(req.body);
         //encriptar contraseña
         const salt = bcrypt.genSaltSync();
@@ -56,7 +57,7 @@ const loginUsuario =  async(req, res = response) => {
         }
       
         const validPassword = bcrypt.compareSync(password, usuario.password);
-        if (!validPassword) return res.json({
+        if (!validPassword) return res.status(400).json({
             ok: false,
             msg
         });
